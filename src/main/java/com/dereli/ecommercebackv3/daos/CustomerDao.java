@@ -9,4 +9,6 @@ public interface CustomerDao extends JpaRepository<Customer, Long> {
 
     Optional<Customer> getCustomerByUsername(String uid);
 
+    Customer getCustomerByPk(Long pk);
+
 }
