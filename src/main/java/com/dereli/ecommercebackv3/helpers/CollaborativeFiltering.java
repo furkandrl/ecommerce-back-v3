@@ -37,9 +37,7 @@ public class CollaborativeFiltering {
     @PostConstruct
     public void executeCollaborativeFiltering(){
         System.out.println("collaborative filtering running");
-
         List<Customer2ProductRating>  ratingList = c2PDao.findAllC2PRatings();
-        System.out.println("collaborative filtering running");
 
         for(Customer2ProductRating c2p : ratingList){
             addUserItemInteraction(c2p.getCustomer().getPk(), c2p.getProduct().getPk(), c2p.getRating());
@@ -56,26 +54,23 @@ public class CollaborativeFiltering {
                 Double rating = userItemMatrix.get(customer).getOrDefault(product, (double) 0);
                 if(rating == 0){
                    double prediction = predictPreference(customer, product);
-                   Customer customerObj = customerDao.getCustomerByPk(customer);
-                   Product productObj = productDao.getProductByPk(product);
-                   Customer2ProductRating newC2P = new Customer2ProductRating();
-                   newC2P.setCustomer(customerObj);
-                   newC2P.setProduct(productObj);
-                   newC2P.setRating(prediction);
-                   c2PDao.save(newC2P);
+                   if(prediction > 0 ) {
+                       Customer customerObj = customerDao.getCustomerByPk(customer);
+                       Product productObj = productDao.getProductByPk(product);
+                       Customer2ProductRating newC2P = new Customer2ProductRating();
+                       newC2P.setCustomer(customerObj);
+                       newC2P.setProduct(productObj);
+                       newC2P.setRating(prediction);
+                       c2PDao.save(newC2P);
+                   }
                 }
             }
 
         }
-
-
-
     }
 
     public void addUserItemInteraction(Long userId, Long itemId, double rating) {
-        //userItemMatrix.compute(userId, k -> new HashMap<>()).put(itemId, rating);
         userItemMatrix.computeIfAbsent(userId, k -> new HashMap<>()).put(itemId, rating);
-        //userItemMatrix.put(userId,  k -> new HashMap<>()).put(itemId, rating);
     }
 
     private double cosineSimilarity(Map<Long, Double> v1, Map<Long, Double> v2) {

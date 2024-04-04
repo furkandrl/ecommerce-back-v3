@@ -7,12 +7,16 @@ import com.dereli.ecommercebackv3.dtos.requests.CategoryListRequest;
 import com.dereli.ecommercebackv3.dtos.requests.CategoryRequest;
 import com.dereli.ecommercebackv3.dtos.responses.CategoryResponse;
 import com.dereli.ecommercebackv3.dtos.responses.ProductListResponse;
+import com.dereli.ecommercebackv3.dtos.responses.ProductPageResponse;
 import com.dereli.ecommercebackv3.dtos.responses.ProductResponse;
 import com.dereli.ecommercebackv3.models.Category;
 import com.dereli.ecommercebackv3.models.Product;
 import com.dereli.ecommercebackv3.services.CategoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,24 +46,27 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     @Override
-    public ProductListResponse getCategoryPage(String code) throws Exception {
+    public ProductPageResponse getCategoryPage(String code, Pageable pageable) throws Exception {
 
-        ProductListResponse response = new ProductListResponse();
+        ProductPageResponse response = new ProductPageResponse();
 
         Optional<Category> optionalCategory = categoryDao.getCategoryByCode(code);
 
         if(optionalCategory.isPresent()){
             response.setCategory(modelMapper.map(optionalCategory.get(), CategoryResponse.class));
 
-            List<Product> productList = productDao.findProductsByCategory(optionalCategory.get());
-            if(productList.isEmpty()){
+            Page<Product> products = productDao.findProductsByCategory(optionalCategory.get(), pageable);
+            if(!products.hasContent()){
                 throw new Exception(Exceptions.PRODUCT_NOT_FOUND_FOR_CATEGORY + optionalCategory.get().getCode());
             }
             response.setCategory(modelMapper.map(optionalCategory.get(), CategoryResponse.class));
-            response.setProducts(productList
+            List<ProductResponse> mappedProducts = products
                     .stream()
                     .map(product -> modelMapper.map(product, ProductResponse.class))
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList());
+
+            Page<ProductResponse> mappedPage = new PageImpl<>(mappedProducts, products.getPageable(), products.getTotalElements());
+            response.setProducts(mappedPage);
 
             return response;
 

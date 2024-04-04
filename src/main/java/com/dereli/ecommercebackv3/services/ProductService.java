@@ -6,6 +6,8 @@ import com.dereli.ecommercebackv3.dtos.responses.ProductListResponse;
 import com.dereli.ecommercebackv3.dtos.responses.ProductResponse;
 import com.dereli.ecommercebackv3.models.Category;
 import com.dereli.ecommercebackv3.models.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
