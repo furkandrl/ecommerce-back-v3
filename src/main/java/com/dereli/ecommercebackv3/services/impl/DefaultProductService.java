@@ -60,6 +60,13 @@ public class DefaultProductService implements ProductService {
     }
 
     @Override
+    public double getAvgRatingForProduct(Long pk) throws Exception {
+        double avgRating = productDao.getAvgRatingByProductPk(pk);
+        if(avgRating > 0) return avgRating;
+        return 0;
+    }
+
+    @Override
     public ProductListResponse getSimilarProducts(String code) throws Exception {
         Product product = this.findProductByCode(code);
         List<Product> similarProducts = ratingHelper.getSimilarProducts(product);

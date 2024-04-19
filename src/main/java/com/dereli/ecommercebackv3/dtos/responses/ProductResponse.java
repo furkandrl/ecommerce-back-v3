@@ -15,6 +15,8 @@ public class ProductResponse {
 
     String picture;
 
+    double avgRating;
+
     Set<String> galleryImages;
 
     Integer stockValue;

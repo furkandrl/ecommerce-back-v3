@@ -25,6 +25,7 @@ public class ProductController {
     public ResponseEntity getProductPageByCode(@PathVariable String productCode){
         try {
             Product productModel = productService.findProductByCode(productCode);
+            productModel.setAvgRating((productService.getAvgRatingForProduct(productModel.getPk()) / 10 *5));
             return new ResponseEntity<>(modelMapper.map(productModel, ProductResponse.class), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

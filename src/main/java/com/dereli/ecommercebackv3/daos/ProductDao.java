@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +25,7 @@ public interface ProductDao extends JpaRepository<Product, Long> {
     List<Long> getAllProductId();
 
     Product getProductByPk(Long pk);
+
+    @Query(value = "SELECT AVG(r.rating) FROM dereli.c2p_rating r WHERE r.product_pk = :productPk", nativeQuery = true)
+    double getAvgRatingByProductPk(@Param("productPk") Long productPk);
 }

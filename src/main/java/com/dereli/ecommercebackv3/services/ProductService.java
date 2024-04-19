@@ -15,6 +15,8 @@ public interface ProductService {
 
     Product findProductByCode(String code) throws Exception;
 
+    double getAvgRatingForProduct(Long pk) throws Exception;
+
     ProductListResponse getSimilarProducts(String code) throws Exception;
 
     ProductListResponse getRecommendedProducts();

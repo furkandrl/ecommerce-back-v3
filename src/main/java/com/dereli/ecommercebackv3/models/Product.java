@@ -37,4 +37,7 @@ public class Product extends Item {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> keywords;
 
+    @Transient
+    private double avgRating;
+
 }
