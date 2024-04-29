@@ -73,9 +73,7 @@ public class DefaultOrderService implements OrderService {
                         .stream()
                         .map(entry -> modelMapper.map(entry, EntryResponse.class))
                         .collect(Collectors.toSet());
-//                entries.stream()
-//                        .forEach(e -> e.getProduct()
-//                                .setCustomerGivenStar(productService.getCustomerGivenStar(customer, e.getProduct()));
+
                 orderResponse.setEntries(entries);
                 orderResponse.setOrderStatus(getOrderStatusName(order.getOrderStatus()));
                 orderResponse.setCreatedAt(dateFormat.format(order.getCreatedAt()));

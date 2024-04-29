@@ -1,6 +1,7 @@
 package com.dereli.ecommercebackv3.services.impl;
 
 import com.dereli.ecommercebackv3.constants.Exceptions;
+import com.dereli.ecommercebackv3.daos.C2PDao;
 import com.dereli.ecommercebackv3.daos.ModelDao;
 import com.dereli.ecommercebackv3.daos.ProductDao;
 import com.dereli.ecommercebackv3.dtos.requests.ProductListRequest;
@@ -10,6 +11,7 @@ import com.dereli.ecommercebackv3.dtos.responses.ProductResponse;
 import com.dereli.ecommercebackv3.helpers.RatingHelper;
 import com.dereli.ecommercebackv3.models.Category;
 import com.dereli.ecommercebackv3.models.Customer;
+import com.dereli.ecommercebackv3.models.Customer2ProductRating;
 import com.dereli.ecommercebackv3.models.Product;
 import com.dereli.ecommercebackv3.services.CategoryService;
 import com.dereli.ecommercebackv3.services.ProductService;
@@ -49,6 +51,9 @@ public class DefaultProductService implements ProductService {
     @Resource
     private RatingHelper ratingHelper;
 
+    @Resource
+    private C2PDao c2PDao;
+
     @Override
     public Product findProductByCode(String code) throws Exception {
         Optional<Product> optionalProduct = productDao.getProductByCode(code);
@@ -69,6 +74,25 @@ public class DefaultProductService implements ProductService {
     @Override
     public double getCustomerGivenStar(Customer customer, Product product){
         return productDao.getCustomerGivenStar(customer.getPk(), product.getPk());
+    }
+
+    @Override
+    public void saveCustomerGivenStar(String code, double star) {
+        Customer customer = sessionService.getCurrentCustomer();
+        var prod = productDao.getProductByCode(code).orElse(null);
+        var existingC2P = c2PDao.findCustomer2ProductRatingsByCustomerAndAndProduct(customer, prod);
+        if(customer != null && prod != null){
+            if(existingC2P == null){
+                var c2p = new Customer2ProductRating();
+                c2p.setCustomer(customer);
+                c2p.setProduct(prod);
+                c2p.setCustomerGivenStar(star);
+                c2PDao.save(c2p);
+            }
+            existingC2P.setCustomerGivenStar(star);
+            c2PDao.save(existingC2P);
+
+        }
     }
 
     @Override

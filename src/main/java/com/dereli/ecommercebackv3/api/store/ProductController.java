@@ -1,6 +1,7 @@
 package com.dereli.ecommercebackv3.api.store;
 
 import com.dereli.ecommercebackv3.constants.DereliCoreConstants;
+import com.dereli.ecommercebackv3.dtos.requests.SaveStarRequest;
 import com.dereli.ecommercebackv3.dtos.responses.ProductResponse;
 import com.dereli.ecommercebackv3.models.Product;
 import com.dereli.ecommercebackv3.services.ProductService;
@@ -64,6 +65,16 @@ public class ProductController {
     public ResponseEntity getFavoriteProducts() {
         try {
             return new ResponseEntity(productService.getFavoriteProducts(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/save-star")
+    public ResponseEntity saveCustomerGivenStar(@RequestBody SaveStarRequest req) {
+        try {
+            productService.saveCustomerGivenStar(req.getProductCode(), req.getCustomerGivenStar());
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
