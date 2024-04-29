@@ -67,6 +67,11 @@ public class DefaultProductService implements ProductService {
     }
 
     @Override
+    public double getCustomerGivenStar(Customer customer){
+        return productDao.getCustomerGivenStar(customer.getPk());
+    }
+
+    @Override
     public ProductListResponse getSimilarProducts(String code) throws Exception {
         Product product = this.findProductByCode(code);
         List<Product> similarProducts = ratingHelper.getSimilarProducts(product);

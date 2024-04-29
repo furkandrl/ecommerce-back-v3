@@ -5,6 +5,7 @@ import com.dereli.ecommercebackv3.dtos.requests.ProductRequest;
 import com.dereli.ecommercebackv3.dtos.responses.ProductListResponse;
 import com.dereli.ecommercebackv3.dtos.responses.ProductResponse;
 import com.dereli.ecommercebackv3.models.Category;
+import com.dereli.ecommercebackv3.models.Customer;
 import com.dereli.ecommercebackv3.models.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ public interface ProductService {
 
     double getAvgRatingForProduct(Long pk) throws Exception;
 
+    double getCustomerGivenStar(Customer customer);
     ProductListResponse getSimilarProducts(String code) throws Exception;
 
     ProductListResponse getRecommendedProducts();

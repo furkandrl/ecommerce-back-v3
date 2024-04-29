@@ -19,4 +19,6 @@ public class Customer2ProductRating extends Item {
 
     private Double rating;
 
+    private double customerGivenStar;
+
 }

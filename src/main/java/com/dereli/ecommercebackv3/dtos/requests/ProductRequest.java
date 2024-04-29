@@ -15,6 +15,8 @@ public class ProductRequest {
 
     String picture;
 
+    double customerGivenStar;
+
     Set<String> galleryImages;
 
     Integer stockValue;

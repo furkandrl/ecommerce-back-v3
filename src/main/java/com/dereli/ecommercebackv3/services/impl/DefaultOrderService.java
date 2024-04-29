@@ -4,6 +4,7 @@ import com.dereli.ecommercebackv3.constants.Exceptions;
 import com.dereli.ecommercebackv3.daos.CartDao;
 import com.dereli.ecommercebackv3.daos.ModelDao;
 import com.dereli.ecommercebackv3.daos.OrderDao;
+import com.dereli.ecommercebackv3.daos.ProductDao;
 import com.dereli.ecommercebackv3.dtos.responses.EntryResponse;
 import com.dereli.ecommercebackv3.dtos.responses.OrderListResponse;
 import com.dereli.ecommercebackv3.dtos.responses.OrderResponse;
@@ -50,6 +51,9 @@ public class DefaultOrderService implements OrderService {
     @Resource
     private ModelMapper modelMapper;
 
+    @Resource
+    private ProductDao productDao;
+
     @Override
     public OrderListResponse getOrdersForCustomer() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy - HH:mm");
@@ -65,6 +69,8 @@ public class DefaultOrderService implements OrderService {
                         .stream()
                         .map(entry -> modelMapper.map(entry, EntryResponse.class))
                         .collect(Collectors.toSet());
+                entries.stream()
+                        .forEach(e -> e.getProduct().setCustomerGivenStar(productDao.getCustomerGivenStar(customer.getPk())));
                 orderResponse.setEntries(entries);
                 orderResponse.setOrderStatus(getOrderStatusName(order.getOrderStatus()));
                 orderResponse.setCreatedAt(dateFormat.format(order.getCreatedAt()));

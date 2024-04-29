@@ -17,6 +17,8 @@ public class ProductResponse {
 
     double avgRating;
 
+    double customerGivenStar;
+
     Set<String> galleryImages;
 
     Integer stockValue;

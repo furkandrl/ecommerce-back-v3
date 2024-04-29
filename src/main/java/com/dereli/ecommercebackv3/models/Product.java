@@ -40,4 +40,7 @@ public class Product extends Item {
     @Transient
     private double avgRating;
 
+    @Transient
+    private double customerGivenStar;
+
 }
