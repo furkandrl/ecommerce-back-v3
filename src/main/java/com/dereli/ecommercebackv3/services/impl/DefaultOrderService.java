@@ -11,10 +11,7 @@ import com.dereli.ecommercebackv3.dtos.responses.OrderResponse;
 import com.dereli.ecommercebackv3.enums.OrderStatus;
 import com.dereli.ecommercebackv3.helpers.RatingHelper;
 import com.dereli.ecommercebackv3.models.*;
-import com.dereli.ecommercebackv3.services.AddressService;
-import com.dereli.ecommercebackv3.services.CartService;
-import com.dereli.ecommercebackv3.services.OrderService;
-import com.dereli.ecommercebackv3.services.SessionService;
+import com.dereli.ecommercebackv3.services.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -52,7 +49,7 @@ public class DefaultOrderService implements OrderService {
     private ModelMapper modelMapper;
 
     @Resource
-    private ProductDao productDao;
+    private ProductService productService;
 
     @Override
     public OrderListResponse getOrdersForCustomer() {
@@ -65,12 +62,20 @@ public class DefaultOrderService implements OrderService {
                 OrderResponse orderResponse = new OrderResponse();
                 orderResponse.setPk(order.getPk().toString());
                 orderResponse.setTotalPrice(order.getTotalPrice());
+
+                order.getEntries()
+                        .stream()
+                        .forEach(e -> e.getProduct()
+                                .setCustomerGivenStar(productService.getCustomerGivenStar(customer, e.getProduct())));
+
+
                 Set<EntryResponse> entries = order.getEntries()
                         .stream()
                         .map(entry -> modelMapper.map(entry, EntryResponse.class))
                         .collect(Collectors.toSet());
-                entries.stream()
-                        .forEach(e -> e.getProduct().setCustomerGivenStar(productDao.getCustomerGivenStar(customer.getPk())));
+//                entries.stream()
+//                        .forEach(e -> e.getProduct()
+//                                .setCustomerGivenStar(productService.getCustomerGivenStar(customer, e.getProduct()));
                 orderResponse.setEntries(entries);
                 orderResponse.setOrderStatus(getOrderStatusName(order.getOrderStatus()));
                 orderResponse.setCreatedAt(dateFormat.format(order.getCreatedAt()));

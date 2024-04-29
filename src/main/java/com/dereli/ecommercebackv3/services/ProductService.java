@@ -18,7 +18,7 @@ public interface ProductService {
 
     double getAvgRatingForProduct(Long pk) throws Exception;
 
-    double getCustomerGivenStar(Customer customer);
+    double getCustomerGivenStar(Customer customer, Product product);
     ProductListResponse getSimilarProducts(String code) throws Exception;
 
     ProductListResponse getRecommendedProducts();

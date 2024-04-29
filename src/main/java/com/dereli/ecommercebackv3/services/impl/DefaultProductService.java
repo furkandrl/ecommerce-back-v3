@@ -67,8 +67,8 @@ public class DefaultProductService implements ProductService {
     }
 
     @Override
-    public double getCustomerGivenStar(Customer customer){
-        return productDao.getCustomerGivenStar(customer.getPk());
+    public double getCustomerGivenStar(Customer customer, Product product){
+        return productDao.getCustomerGivenStar(customer.getPk(), product.getPk());
     }
 
     @Override
