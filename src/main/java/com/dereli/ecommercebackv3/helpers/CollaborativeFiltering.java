@@ -37,7 +37,8 @@ public class CollaborativeFiltering {
     @PostConstruct
     public void executeCollaborativeFiltering(){
         System.out.println("collaborative filtering running");
-        List<Customer2ProductRating>  ratingList = c2PDao.findAllC2PRatings();
+        List<Customer2ProductRating>  ratingList = c2PDao.findAllC2PRatings().stream()
+                .filter(c -> c.getCustomer()!=null).collect(Collectors.toList());
 
         for(Customer2ProductRating c2p : ratingList){
             addUserItemInteraction(c2p.getCustomer().getPk(), c2p.getProduct().getPk(), c2p.getRating());
