@@ -166,4 +166,14 @@ public class RatingHelper {
         }
     }
 
+    public void addCustomerGivenStar(double customerGivenStar, Product product, Customer customer){
+        double effectiveRating = customerGivenStar - 2.5;
+        if( effectiveRating < 0){
+            int percentage = (int) (effectiveRating*2*10);
+            createOrRecalculateRatingOfC2P(customer, product, 0D, percentage);
+        }
+        int percentage = (int) (effectiveRating*10);
+        createOrRecalculateRatingOfC2P(customer, product, 0D, percentage);
+    }
+
 }

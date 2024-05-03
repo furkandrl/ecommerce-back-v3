@@ -88,9 +88,11 @@ public class DefaultProductService implements ProductService {
                 c2p.setProduct(prod);
                 c2p.setCustomerGivenStar(star);
                 c2PDao.save(c2p);
+                ratingHelper.addCustomerGivenStar(star, prod,customer);
             }
             existingC2P.setCustomerGivenStar(star);
             c2PDao.save(existingC2P);
+            ratingHelper.addCustomerGivenStar(star, prod,customer);
 
         }
     }
