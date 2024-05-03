@@ -34,7 +34,8 @@ public class CollaborativeFiltering {
         userItemMatrix = new HashMap<>();
     }
 
-    @PostConstruct
+
+    @Scheduled(fixedRate = 600000)
     public void executeCollaborativeFiltering(){
         System.out.println("collaborative filtering running");
         List<Customer2ProductRating>  ratingList = c2PDao.findAllC2PRatings().stream()
