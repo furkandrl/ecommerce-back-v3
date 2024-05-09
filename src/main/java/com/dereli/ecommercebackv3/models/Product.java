@@ -18,6 +18,7 @@ public class Product extends Item {
 
     private String description;
 
+    @Column(length = 2000)
     private String picture;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -38,9 +39,9 @@ public class Product extends Item {
     private Set<String> keywords;
 
     @Transient
-    private double avgRating;
+    private Double avgRating;
 
     @Transient
-    private double customerGivenStar;
+    private Double customerGivenStar;
 
 }

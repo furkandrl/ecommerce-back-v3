@@ -27,8 +27,8 @@ public interface ProductDao extends JpaRepository<Product, Long> {
     Product getProductByPk(Long pk);
 
     @Query(value = "SELECT AVG(r.rating) FROM dereli.c2p_rating r WHERE r.product_pk = :productPk", nativeQuery = true)
-    double getAvgRatingByProductPk(@Param("productPk") Long productPk);
+    Double getAvgRatingByProductPk(@Param("productPk") Long productPk);
 
     @Query(value = "SELECT r.customer_given_star FROM dereli.c2p_rating r WHERE r.customer_pk = :customerPk AND r.product_pk =:productPk", nativeQuery = true)
-    double getCustomerGivenStar(@Param("customerPk") Long customerPk, @Param("productPk") Long productPk);
+    Double getCustomerGivenStar(@Param("customerPk") Long customerPk, @Param("productPk") Long productPk);
 }

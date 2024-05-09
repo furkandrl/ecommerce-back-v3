@@ -66,14 +66,17 @@ public class DefaultProductService implements ProductService {
 
     @Override
     public double getAvgRatingForProduct(Long pk) throws Exception {
-        double avgRating = productDao.getAvgRatingByProductPk(pk);
-        if(avgRating > 0) return avgRating;
+        Double avgRating = productDao.getAvgRatingByProductPk(pk);
+        if(avgRating != null && avgRating > 0) return avgRating;
         return 0;
     }
 
     @Override
     public double getCustomerGivenStar(Customer customer, Product product){
-        return productDao.getCustomerGivenStar(customer.getPk(), product.getPk());
+        Double star = productDao.getCustomerGivenStar(customer.getPk(), product.getPk());
+        return star != null ? star : 0;
+
+
     }
 
     @Override
