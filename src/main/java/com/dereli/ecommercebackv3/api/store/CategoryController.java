@@ -18,7 +18,7 @@ public class CategoryController {
 
     @GetMapping("/{categoryCode}")
     public ResponseEntity getCategoryPageByCode(@PathVariable String categoryCode, @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size) {
+                                                @RequestParam(defaultValue = "9") int size) {
         try {
             Pageable pageable = PageRequest.of(page, size);
             return new ResponseEntity<>(categoryService.getCategoryPage(categoryCode, pageable), HttpStatus.OK);
