@@ -85,6 +85,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/delete-address/{addressCode}")
+    @CrossOrigin
     public ResponseEntity deleteAddress(@PathVariable String addressCode) {
         try {
             addressService.deleteAddress(addressCode);
