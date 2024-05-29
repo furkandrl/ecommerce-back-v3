@@ -75,6 +75,7 @@ public class AccountController {
     }
 
     @PutMapping("/edit-address/{addressCode}")
+    @CrossOrigin
     public ResponseEntity editAddress(@PathVariable String addressCode, @RequestBody AddressRequest addressRequest) {
         try {
             addressService.editAddress(addressCode, addressRequest);
