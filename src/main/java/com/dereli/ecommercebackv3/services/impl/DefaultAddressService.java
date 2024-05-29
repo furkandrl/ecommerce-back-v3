@@ -38,6 +38,7 @@ public class DefaultAddressService implements AddressService {
         if(optionalAddress.isPresent()){
             Address address = optionalAddress.get();
             address.setAddress(addressRequest.getAddress());
+            addressDao.save(address);
         } else {
             throw new Exception(Exceptions.ADDRESS_NOT_FOUND_CODE + code);
         }
